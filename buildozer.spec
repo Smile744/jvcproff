@@ -6,6 +6,7 @@ package.domain = org.jvcsmile
 
 source.dir = .
 source.include_extn = py,png,jpg,jpeg,txt,json,atlas,csv
+source.exclude_patterns = license, README.md, test, tests, unittest
 version = 1.0
 
 # REQUERIMIENTOS CORRECTOS (Añadido android y shizuku)
