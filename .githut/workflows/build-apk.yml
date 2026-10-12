@@ -1,0 +1,64 @@
+nombre: construir-apk
+
+en:
+  empujar:
+    ramas: [ principal, maestra ]
+  flujo_de_trabajo: {}
+
+concurrencia:
+  grupo: apk
+  cancelación en curso: falso
+
+empleos:
+  APK:
+    Se ejecuta en: ubuntu-22.04
+    minutos de tiempo de espera: 90
+    entorno:
+      JAVA_HOME: /usr/lib/jvm/java-17-openjdk-amd64
+    pasos:
+      - usos: actions/checkout@v4
+
+      - usos: actions/setup-python@v5
+        con:
+          Versión de Python: '3.10'
+
+      - nombre: Dependencias de sistema
+        correr: |
+          sudo apt-get update -y
+          sudo apt-get install -y --no-install-recommends \
+            openjdk-17-jdk git zip unzip autoconf libtool pkg-config cmake \
+            zlib1g-dev libncurses5-dev libncursesw5-dev libtinfo5 \
+            libffi-dev libssl-dev patchelf
+          sudo update-alternatives --set java $JAVA_HOME/bin/java
+          versión de Java
+
+      - nombre: Buildozer
+        correr: |
+          echo "$HOME/.local/bin" >> $GITHUB_PATH
+          python -m pip install --user --upgrade pip
+          python -m pip install --user "cython<3.0.0" "setuptools<66.0.0" "wheel~=0.40.0" buildozer
+          buildozer --versión
+
+      - nombre: Generar icono joker.png
+        correr: |
+          python -m pip install --user pillow
+          Python - <<'PY'
+          Desde PIL se importa Image, ImageDraw
+          im = Image.new("RGB", (512, 512), (13, 13, 13))
+          ImageDraw.Draw(im).ellipse([96, 96, 416, 416], fill=(200, 25, 25))
+          im.save("joker.png")
+          print("joker.png generado")
+          PY
+
+      - nombre: Compilador APK (depuración)
+        ejecutar: buildozer -v android debug
+
+      - nombre: Mostrar resultado
+        ejecutar: ls -lh bin/
+
+      - usos: actions/upload-artifact@v4
+        con:
+          nombre: jvcproff-apk
+          ruta: bin/*.apk
+          if-no-files-found: error
+          días de retención: 30
