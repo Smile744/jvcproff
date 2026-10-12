@@ -17,7 +17,6 @@ android.api = 33
 android.minapi = 21
 android.permissions = INTERNET
 android.accept_sdk_license = True
-android.entrypoint = main:JVCSmileApp
 p4a.branch = master
 
 icon.filename = %(source.dir)s/joker.png
