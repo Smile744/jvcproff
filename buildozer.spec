@@ -6,7 +6,7 @@ package.domain = org.jvcsmile
 
 source.dir = .
 source.include_extn = py,png,jpg,jpeg,txt,json,atlas,csv
-source.exclude_patterns = license, README.md, test, tests, unittest
+source.exclude_patterns = license, README.md, test, tests, unittest, */tests/*, */test/*
 version = 1.0
 
 # REQUERIMIENTOS CORRECTOS (Añadido android y shizuku)
@@ -26,3 +26,4 @@ android.accept_sdk_license = True
 p4a.branch = master
 
 icon.filename = %(source.dir)s/joker.png
+
