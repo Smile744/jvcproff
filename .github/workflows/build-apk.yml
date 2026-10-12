@@ -1,43 +1,51 @@
-name: Build APK
+name: construir-apk
 
 on:
   push:
     branches: [ main, master ]
+  workflow_dispatch: {}
 
 concurrency:
   group: apk
   cancel-in-progress: false
 
 jobs:
-  build:
+  apk:
     runs-on: ubuntu-22.04
     timeout-minutes: 90
     env:
       JAVA_HOME: /usr/lib/jvm/java-17-openjdk-amd64
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-python@v5
         with:
           python-version: '3.10'
-          
-      - name: System Dependencies
+
+      - name: Dependencias de sistema
         run: |
           sudo apt-get update -y
           sudo apt-get install -y --no-install-recommends \
-              openjdk-17-jdk git zip unzip autoconf libtool pkg-config cmake \
-              zlib1g-dev libncurses5-dev libncursesw5-dev libtinfo5 \
-              libffi-dev libssl-dev patchelf
+            openjdk-17-jdk git zip unzip autoconf libtool pkg-config cmake \
+            zlib1g-dev libncurses5-dev libncursesw5-dev libtinfo5 \
+            libffi-dev libssl-dev patchelf
           sudo update-alternatives --set java $JAVA_HOME/bin/java
           java -version
+
+      - name: Liberar espacio para el SDK y el NDK
+        run: |
+          sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/gh-cli \
+            /opt/hostedtoolcache/CodeQL /usr/local/share/boost || true
+          df -h /home || true
 
       - name: Buildozer
         run: |
           echo "$HOME/.local/bin" >> $GITHUB_PATH
           python -m pip install --user --upgrade pip
-          python -m pip install --user "cython<3.0.0" "setuptools<66.0.0" "wheel~=0.40.0"
+          python -m pip install --user "cython<3.0.0" "setuptools<66.0.0" "wheel~=0.40.0" buildozer
           buildozer --version
 
-      - name: Generate joker.png icon
+      - name: Generar icono joker.png
         run: |
           python -m pip install --user pillow
           python - <<'PY'
@@ -45,13 +53,13 @@ jobs:
           im = Image.new("RGB", (512, 512), (13, 13, 13))
           ImageDraw.Draw(im).ellipse([96, 96, 416, 416], fill=(200, 25, 25))
           im.save("joker.png")
-          print("joker.png generated")
+          print("joker.png generado")
           PY
 
-      - name: Compile APK (Debug)
+      - name: Compilar APK (debug)
         run: buildozer -v android debug
 
-      - name: Show Result
+      - name: Mostrar resultado
         run: ls -lh bin/
 
       - uses: actions/upload-artifact@v4
