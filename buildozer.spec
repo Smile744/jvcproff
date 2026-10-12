@@ -1,4 +1,4 @@
-[APP]
+[app]
 
 title = JVC-PRO-FF
 package.name = jvcsmile
