@@ -8,7 +8,8 @@ source.dir = .
 source.include_extn = py,png,jpg,jpeg,txt,json,atlas,csv
 version = 1.0
 
-requirements = python3,kivy
+android.permissions = INTERNET,WRITE_EXTERNAL_STORAGE,READ_EXTERNAL_STORAGE,moe.shizuku.manager.permission.API_V23
+
 orientation = portrait
 fullscreen = 0
 
