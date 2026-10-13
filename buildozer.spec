@@ -6,11 +6,9 @@ package.domain = org.jvcsmile
 
 source.dir = .
 source.include_extn = py,png,jpg,jpeg,txt,json,atlas,csv
-source.exclude_patterns = license, README.md, test, tests, unittest, */tests/*, */test/*
 version = 1.0
 
-# REQUERIMIENTOS CORRECTOS (Añadido android y shizuku)
-requirements = python3,kivy,android,shizuku
+requirements = python3,kivy
 
 orientation = portrait
 fullscreen = 0
@@ -18,12 +16,8 @@ fullscreen = 0
 android.archs = arm64-v8a
 android.api = 33
 android.minapi = 21
-
-# UNICA LINEA DE PERMISOS VALIDA (Sin duplicados)
-android.permissions = INTERNET,WRITE_EXTERNAL_STORAGE,READ_EXTERNAL_STORAGE,moe.shizuku.manager.permission.API_V23
-
+android.permissions = INTERNET
 android.accept_sdk_license = True
 p4a.branch = master
 
 icon.filename = %(source.dir)s/joker.png
-
