@@ -198,3 +198,14 @@ class JvcProPanel(ScrollView):
         if not self.activo:
             self.alternar_modo_global(None)
         print("Optimizaciones inyectadas. Listo para jugar.")
+
+
+class JVCProGameApp(App):
+    title = 'JVC-PRO-GAME'
+
+    def build(self):
+        return JvcProPanel(self)
+
+
+if __name__ == '__main__':
+    JVCProGameApp().run()
